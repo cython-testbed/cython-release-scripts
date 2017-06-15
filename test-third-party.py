@@ -44,8 +44,9 @@ def main(argv):
 
     errors = []
 
+    user = options.user or raw_input("User: ")
     token = options.token or raw_input("Token: ")
-    org = github.Github(options.user, token).get_organization(ORG)
+    org = github.Github(user, token).get_organization(ORG)
 
     if options.commit:
         cython_commit = options.commit
@@ -88,7 +89,7 @@ def main(argv):
                 print("Updating travis config at %s" % config_path)
                 if not options.dry_run:
                     r = requests.put('https://api.github.com/repos/%s/%s/contents/%s' % (ORG, repo.name, config_path),
-                                     auth=(options.user, token),
+                                     auth=(user, token),
                                      json={
                                          'path': config_path,
                                          'message': 'Update travis config to point to Cython at %s.' % cython_commit,
