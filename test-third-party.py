@@ -109,7 +109,7 @@ def main(argv):
         except Exception, exn:
             if options.keep_going:
                 traceback.print_exc()
-                errors.append(str(exn))
+                errors.append("%s: %s" % (repo.name, exn))
             else:
                 raise
 
