@@ -25,6 +25,8 @@ test_config_files = {
     'scikit-learn': 'build_tools/travis/install.sh',
     'scikit-image': 'tools/travis_before_install.sh',
     'pandas': 'ci/install_travis.sh',
+    'uvloop': '.ci/travis-install.sh',
+    'arrow': 'ci/travis_script_python.sh',
 }
 
 def error(msg, listing=None):
