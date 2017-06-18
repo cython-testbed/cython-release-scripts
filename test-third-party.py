@@ -42,6 +42,8 @@ def main(argv):
     parser.add_argument('--dry_run', action='store_true')
     parser.add_argument('--keep-going', action='store_true')
     parser.add_argument('--commit')
+    parser.add_argument('repos', metavar='REPO', nargs='*')
+
     options = parser.parse_args(argv)
 
     errors = []
@@ -60,6 +62,8 @@ def main(argv):
     for repo in org.get_repos():
         try:
             if repo.name in EXCLUDE_REPOS:
+                continue
+            elif options.repos and repo.name not in options.repos:
                 continue
             print()
             print(repo.name)
