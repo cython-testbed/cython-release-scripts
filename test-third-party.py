@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import argparse
 import base64
+import itertools
 import pprint
 import re
 import sys
@@ -33,6 +34,11 @@ def error(msg, listing=None):
     print("ERROR", msg)
     if listing:
         listing.append(msg)
+
+def is_good_commit(commit):
+    for status in list(commit.get_statuses()):
+        if '/travis-ci/' in status.context and status.state == 'success':
+            return True
 
 def main(argv):
 
@@ -69,8 +75,15 @@ def main(argv):
             print(repo.name)
 
             current_sha = repo.get_commits()[0].sha
-            upstream_sha = repo.parent.get_commits()[0].sha
-            if current_sha != upstream_sha:
+            for commit in itertools.islice(repo.parent.get_commits(), 25):
+                if is_good_commit(commit):
+                    upstream_sha = commit.sha
+                    break
+            else:
+                upstream_sha = None
+            if not upstream_sha:
+                print('Unable to find good commit.')
+            elif current_sha != upstream_sha:
                 print('Merge %s into master' % upstream_sha)
                 if not options.dry_run:
                     repo.merge('master', upstream_sha)
