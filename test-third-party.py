@@ -24,7 +24,7 @@ TRAVIS_CONFIG = '.travis.yml'
 test_config_files = {
     'grpc': 'tools/run_tests/build_python.sh',
     'scikit-learn': 'build_tools/travis/install.sh',
-    'scikit-image': 'tools/travis_before_install.sh',
+    'scikit-image': 'tools/travis/before_install.sh',
     'pandas': 'ci/install_travis.sh',
     'uvloop': '.ci/travis-install.sh',
     'arrow': 'ci/travis_script_python.sh',
