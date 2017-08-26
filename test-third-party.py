@@ -61,7 +61,7 @@ def main(argv):
     if options.commit:
         cython_commit = options.commit
     else:
-        cython_repo = org.get_repo('cython')
+        cython_repo = github.Github(user, token).get_organization('cython').get_repo('cython')
         cython_commit = cython_repo.get_commits()[0].sha
 
 
