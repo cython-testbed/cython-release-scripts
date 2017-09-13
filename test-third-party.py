@@ -94,9 +94,9 @@ def main(argv):
             config_path = test_config_files.get(repo.name, TRAVIS_CONFIG)
             try:
                 travis = repo.get_file_contents(config_path)
-                old_travis = travis.decoded_content
-            except Exception, exn:
-                error("No travis configuration for %s" % repo.name, errors)
+                old_travis = travis.decoded_content.decode('utf8')
+            except Exception as exc:
+                error("No travis configuration for %s (%s)" % (repo.name, exc), errors)
                 continue
             if 'cython/archive' not in old_travis:
                 error("Travis configuration for %s doesn't point to cython snapshot" % repo.name, errors)
@@ -112,7 +112,7 @@ def main(argv):
                                      json={
                                          'path': config_path,
                                          'message': 'Update travis config to point to Cython at %s.' % cython_commit,
-                                         'content': base64.b64encode(new_travis),
+                                         'content': base64.b64encode(new_travis.encode('utf8')).decode('ascii'),
                                          'sha': travis.sha,
                                       })
                     if r.status_code // 100 != 2:
@@ -125,7 +125,7 @@ def main(argv):
     #                     travis.sha)
             else:
                 print("Already up to date.")
-        except Exception, exn:
+        except Exception as exn:
             if options.keep_going:
                 traceback.print_exc()
                 errors.append("%s: %s" % (repo.name, exn))
