@@ -28,6 +28,7 @@ test_config_files = {
     'pandas': 'ci/install_travis.sh',
     'uvloop': '.ci/travis-install.sh',
     'arrow': 'ci/travis_script_python.sh',
+    'spaCy': 'travis.sh',
 }
 
 def error(msg, listing=None):
